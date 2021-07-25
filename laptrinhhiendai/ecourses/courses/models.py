@@ -1,9 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from ckeditor.fields import RichTextField
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to='uploads/%Y/%m')
+    avatar = models.ImageField(upload_to='course/%Y/%m')
+    # admin matkhau123
 
 
 # Bảng này sẽ được tạo trong db dưới tên: course_category
@@ -31,6 +33,7 @@ class ItemBase(models.Model):
 
 
 class Course(ItemBase):
+
     class Meta:
         unique_together = ('subject', 'category')
         ordering = ["id"]
@@ -40,13 +43,16 @@ class Course(ItemBase):
 
 
 class Lesson(ItemBase):
-    content = models.TextField()
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    tags = models.ManyToManyField('Tag', blank=True, null=True)
+    class Meta:
+        unique_together = ('subject', 'course')
+
+    content = RichTextField()
+    course = models.ForeignKey(Course, related_name='lessons', on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag', related_name='lessons', blank=True, null=True)
 
 
 class Tag(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
