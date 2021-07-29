@@ -1,2 +1,7 @@
+HibernateDemo/pojo/Manufacturer.class
+HibernateDemo/HibernateTester.class
+HibernateDemo/HibernateUtils.class
 com/quoctan/springdemo/Demo.class
 com/quoctan/springdemo/HelloWorld.class
+HibernateDemo/pojo/Category.class
+HibernateDemo/pojo/Product.class
