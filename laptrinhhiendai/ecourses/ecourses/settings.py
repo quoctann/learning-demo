@@ -27,7 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
+# Khai báo các app tự mình tạo hoặc sử dụng thư viện tại đây
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,12 +38,16 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'ckeditor',
     'ckeditor_uploader',
-    'rest_framework'
+    'rest_framework',
+    'oauth2_provider',
+    'drf_yasg',
+    'debug_toolbar',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': '2'
+    'PAGE_SIZE': '2',
+    'DEFAULT_AUTHENTICATION_CLASSES': ('oauth2_provider.contrib.rest_framework.OAuth2Authentication', ),
 }
 
 MIDDLEWARE = [
@@ -54,6 +58,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Công cụ debug để do hiệu năng, chỉ sử dụng khi development
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+# Các địa chỉ IP cho phép server được liệt kê hiển thị debug toolbar
+INTERNAL_IPS = [
+    '127.0.0.1'
 ]
 
 ROOT_URLCONF = 'ecourses.urls'
@@ -89,6 +100,7 @@ DATABASES = {
     }
 }
 
+# Khai báo lớp user được sử dụng để chứng thực
 AUTH_USER_MODEL = 'courses.User'
 
 # Password validation
@@ -127,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
-CKEDITOR_UPLOAD_PATH = 'lessons/'
+CKEDITOR_UPLOAD_PATH = 'ckeditor/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
