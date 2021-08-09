@@ -4,12 +4,16 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
+    // Cấu hình chỉ gắn annotation thì để vào đây
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+        return new Class[] {
+            HibernateConfig.class,
+            TilesConfig.class
+        };
     }
 
+    // Cấu hình có implement web configure thì để vào đây
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] {

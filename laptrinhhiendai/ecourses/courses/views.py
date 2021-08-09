@@ -76,7 +76,7 @@ def welcome2(request, year):
 class TestView(View):
     # Tùy loại http req mà get hoặc post
     def get(self, request):
-        return HttpResponse("Test extend view class")
+        return render(request, template_name='index.html')
 
     def post(self, request):
         pass

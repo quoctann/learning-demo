@@ -8,5 +8,6 @@
     <body>
         <h1>Hello.jsp page</h1>
         <p>${message}</p>
+        <p>From index test forward: ${testMsg}</p>
     </body>
 </html>

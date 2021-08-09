@@ -1,10 +1,17 @@
 package com.quoctan.controllers;
 
 import com.quoctan.pojos.UserDemo;
+import com.quoctan.service.CategoryService;
+import com.quoctan.service.ProductService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.Query;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +65,51 @@ public class HomeController {
     @RequestMapping(path = "/hello-post", method = RequestMethod.POST)
     public String show(Model model, @ModelAttribute(value = "userDemo") UserDemo userDemo ) {
         model.addAttribute("fullName", userDemo.getFirstName() + " " + userDemo.getLastName());
+        return "index";
+    }
+    
+    @RequestMapping(path="/test")
+    public String testRedirect(Model model) {
+        model.addAttribute("testMsg", "Welcome redirect");
+        // Chuyển bằng forward thì nó sẽ lại dữ liệu request cũ, chỉ đổi view
+        // chứ không thay đổi url, sử dụng url là tạo mới một request luôn mất
+        // toàn bộ dữ liệu cũ. forward dùng để chuyển action này sang action
+        // khác
+        return "forward:/hello/RedirectName";
+    }
+//    // Sử dụng hibernate truy vấn dữ liệu
+//    @Autowired
+//    private LocalSessionFactoryBean sessionFactory;
+//    
+//    @RequestMapping(path="hibernate-demo")
+//    @Transactional
+//    public String integratedDemo(Model model) {
+////        // Cách làm không sử dụng connection pool
+////        Session s = sessionFactory.getObject().openSession();
+////        Query q = s.createQuery("FROM Category");
+////        model.addAttribute("categories", q.getResultList());
+////        s.close();
+//
+//        Session s = sessionFactory.getObject().getCurrentSession();
+//        Query q = s.createQuery("From Category");
+//        model.addAttribute("categories", q.getResultList());
+//        return "query";
+//    }
+    
+    
+    
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
+        
+    @RequestMapping("/demo2")
+    public String demo2(Model model) {
+        model.addAttribute("categories", this.categoryService.getCategories());
+        model.addAttribute("products", this.productService.getProducts(""));
+        //return "query";
+        // index lúc này sẽ vào tiles config rà xem trùng name nào thì nó xử lý,
+        // nếu ko có thì nó mởi truy xuất tập tin theo local view resolver
         return "index";
     }
 }

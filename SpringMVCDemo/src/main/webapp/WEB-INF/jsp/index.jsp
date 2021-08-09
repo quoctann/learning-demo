@@ -10,8 +10,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Homepage</title>
+        <link rel="stylesheet" <c:url value="/css/style.css"/>/>
     </head>
     <body>
+        <img src="<c:url value="/images/default.jpg"/>" alt="test"/>
+        <div class="box">
+            <a href="<c:url value="/test"/>">Redirect/forward</a>
+        </div>
         <div class="box">
             <h1>Welcome to website ${name}</h1>
         </div>
@@ -56,6 +61,7 @@
             margin-top: 1rem;
             width: 80vh;
             border: 2px solid #333;
+            border-radius: .5rem;
         }
     </style>
 </html>
