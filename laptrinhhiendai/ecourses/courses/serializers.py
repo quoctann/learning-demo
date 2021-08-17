@@ -1,8 +1,8 @@
 # Tập tin này dùng để cấu hình các trường serializer - chuyển các kiểu dữ liệu
 # json thành lớp đối tượng và ngược lại để tương tác trên môi trường internet
-
+from rest_framework import pagination
 from rest_framework.serializers import ModelSerializer
-from .models import Course, Tag, Lesson, User
+from .models import Course, Tag, Lesson, User, Category
 
 
 # Mỗi lớp model khi được sử dụng trong api sẽ có một lớp serializer
@@ -52,3 +52,9 @@ class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'subject', 'content', 'created_date', 'course', 'tags']
+
+
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

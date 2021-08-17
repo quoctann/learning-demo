@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'drf_yasg',
     'debug_toolbar',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
@@ -60,7 +61,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Công cụ debug để do hiệu năng, chỉ sử dụng khi development
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # Cấu hình để truy cập API từ client
+    'corsheaders.middleware.CorsMiddleware'
 ]
+
+# Xem docs thêm, cho phép những domain nào truy cập vào hệ thống
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = ['http://localhost:3000/']
 
 # Các địa chỉ IP cho phép server được liệt kê hiển thị debug toolbar
 INTERNAL_IPS = [

@@ -17,17 +17,17 @@ class CourseViewSet(viewsets.ModelViewSet):
     # Khai báo lớp serializer để chuyển đổi dữ liệu
     serializer_class = CourseSerializer
     # Khai báo để ko hiện ra trên swagger
-    swagger_schema = None
+    # swagger_schema = None
     # Sau 2 3 dòng trên thì ta có 2 endpoint với 5 cái api rỗng để sử dụng rồi
     # Gắn lớp này thì bắt buộc phải được chứng thực mới có thể get dữ liệu
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     # Để custom permission là lấy nếu ds dữ liệu thôi thì vẫn trả ra bình thường
     # còn những thao tác khác thì bắt buộc phải chứng thực mới được thực hiện:
-    # def get_permissions(self):
-    #     if self.action == 'list':
-    #         return [permissions.AllowAny()]
-    #     return [permissions.IsAuthenticated()]
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
 
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -98,3 +98,11 @@ class UserViewSet(viewsets.ViewSet,
         if self.action == 'retrieve':
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
+
+
+# Nhắc lại viewset là nó cung cấp mọi thứ tập hợp có sẵn trong đó chỉ cần hiện
+# thực xài thôi
+class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = None
