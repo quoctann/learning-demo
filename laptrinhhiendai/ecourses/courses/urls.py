@@ -11,9 +11,9 @@ from . import views
 # Các lệnh này sẽ tự sinh route api không cần cấu hình thủ công, default router sẽ
 # render ra trang api của django mà ko cần xử lý gì thêm
 router = DefaultRouter()
-router.register('course', views.CourseViewSet, basename='course')
+router.register('courses', views.CourseViewSet, basename='courses')
 router.register('lessons', views.LessonViewSet, basename='lessons')
-router.register('user', views.UserViewSet, basename='user')
+router.register('users', views.UserViewSet, basename='users')
 router.register('categories', views.CategoryViewSet, basename='categories')
 
 

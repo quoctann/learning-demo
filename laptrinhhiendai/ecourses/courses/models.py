@@ -30,7 +30,7 @@ class ItemBase(models.Model):
 
     subject = models.CharField(max_length=255, null=False)
     # Tự upload hình ảnh vào thư mục năm/ngày
-    image = models.ImageField(upload_to='upload/%Y/%m', default=None)
+    image = models.ImageField(upload_to='static/upload/%Y/%m', default=None)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)

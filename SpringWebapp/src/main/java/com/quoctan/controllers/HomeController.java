@@ -43,9 +43,16 @@ public class HomeController {
     // tắt đi bằng cách bật cờ required, default để ko có truyền thì cũng có giá trị
     @RequestMapping("/")
     @Transactional
+//    public String index(Model model,
+//            @RequestParam(value = "kw", required = false, defaultValue = "") String kw) {
+//        model.addAttribute("products", this.productService.getProducts(kw));
+//        return "index";
+//    }
     public String index(Model model,
-            @RequestParam(value = "kw", required = false, defaultValue = "") String kw) {
-        model.addAttribute("products", this.productService.getProducts(kw));
+            @RequestParam(required = false) Map<String, String> params) {
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        model.addAttribute("products", this.productService.getProducts(params.getOrDefault("kw", ""), page));
+        model.addAttribute("counter", this.productService.countProduct());
         return "index";
     }
     

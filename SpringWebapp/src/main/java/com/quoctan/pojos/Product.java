@@ -1,6 +1,5 @@
 package com.quoctan.pojos;
 
-import com.quoctan.pojos.Category;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,6 +16,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Entity
@@ -25,8 +30,11 @@ public class Product implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Size(min=5, max=100, message="{product.name.lenErr}")
     private String name;
     private String description;
+    @Min(value=10000, message="{product.price.minErr}")
+    @Max(value=10000000, message="{product.price.minErr}")
     private BigDecimal price;
     private String image;
     @Column(name="created_date")
@@ -37,6 +45,7 @@ public class Product implements Serializable{
     // bảng mặc dù có thể không dùng tới
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
+    @NotNull(message="{product.category.nullErr}")
     private Category category;
     // n-n fetch mặc định lazy
     @ManyToMany
@@ -46,6 +55,18 @@ public class Product implements Serializable{
             inverseJoinColumns = { @JoinColumn(name = "manufacturer_id") }
     )
     private Set<Manufacturer> manufacturers;
+    // Multipart liên kết file vào đường dẫn, gắn @transient để chỉ định trường 
+    // ko có hiển thị dưới csdl
+    @Transient
+    private MultipartFile file;
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public Set<Manufacturer> getManufacturers() {
         return manufacturers;

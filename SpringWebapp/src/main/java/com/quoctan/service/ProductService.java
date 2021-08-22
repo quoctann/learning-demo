@@ -5,5 +5,7 @@ import java.util.List;
 
 
 public interface ProductService {
-    List<Product> getProducts(String kw);
+    List<Product> getProducts(String kw, int page);
+    long countProduct();
+    boolean addOrUpdate(Product product);
 }

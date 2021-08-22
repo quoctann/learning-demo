@@ -1,12 +1,23 @@
 package com.quoctan.configs;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.quoctan.formatter.CategoryFormatter;
+import com.quoctan.validator.ProductNameValidator;
+import com.quoctan.validator.WebAppValidator;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -21,7 +32,8 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {
     "com.quoctan.controllers",
     "com.quoctan.repository",
-    "com.quoctan.service"
+    "com.quoctan.service",
+    "com.quoctan.validator"
 })
 public class WebApplicationContextConfig implements WebMvcConfigurer {
     
@@ -39,6 +51,34 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("/resources/images/");
     }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new CategoryFormatter());
+    }
+    
+    @Override
+    public Validator getValidator() {
+        return validator();
+    }
+    
+    // Cấu hình validator của lớp product
+    @Bean
+    public WebAppValidator productValidator() {
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new ProductNameValidator());
+        WebAppValidator v = new WebAppValidator();
+        v.setSpringValidator(springValidators);
+        return v;
+    }
+    
+    @Bean
+    public LocalValidatorFactoryBean validator() {
+        LocalValidatorFactoryBean v = new LocalValidatorFactoryBean();
+        v.setValidationMessageSource(messageSource());
+        return v;
+    }
+    
     
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver() {
@@ -54,5 +94,25 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
         source.setBasename("messages");
         return source;
+    }
+    
+    // Setup bean để xử lý upload ảnh file các thứ encode multipart
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("UTF-8");
+        return resolver;
+    }
+    
+    // Tạo bean tương tác với cloudinary (mở dashboard nó ra)
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary c = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "quoctan",
+            "api_key", "146256471874449",
+            "api_secret", "DngyGbiJtXwvStyV7r_pbfa8St8",
+            "secure", true    
+        ));
+        return c;
     }
 }

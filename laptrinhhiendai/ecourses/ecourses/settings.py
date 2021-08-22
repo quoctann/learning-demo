@@ -145,7 +145,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = '%s/courses/static/' % BASE_DIR
+MEDIA_ROOT = '%s/courses/' % BASE_DIR
 CKEDITOR_UPLOAD_PATH = 'ckeditor/'
 
 # Default primary key field type

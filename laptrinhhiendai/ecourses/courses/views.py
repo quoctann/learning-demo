@@ -6,12 +6,19 @@ from rest_framework import viewsets, permissions, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
+from rest_framework.pagination import PageNumberPagination
 from .serializers import *
+
+
+# Phân trang phía server, sử dụng lại bên dưới
+class CoursePagination(PageNumberPagination):
+    page_size = 2
 
 
 # Tạo một viewset sử dụng ModelViewSet để nó cấu hình sẵn các endpoint với các
 # url để sử dụng
 class CourseViewSet(viewsets.ModelViewSet):
+    pagination_class = CoursePagination
     # Cấu hình câu truy vấn để lấy dữ liệu ra
     queryset = Course.objects.filter(active=True)
     # Khai báo lớp serializer để chuyển đổi dữ liệu
