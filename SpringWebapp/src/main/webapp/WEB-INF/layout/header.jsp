@@ -12,8 +12,18 @@
         <ul class="dropdown-menu">
             <c:forEach var="cate" items="${categories}">
                 <li><a class="dropdown-item" href="#">${cate.name}</a></li>
-            </c:forEach>
+                </c:forEach>
         </ul>
     </li>
+    <c:if test="${pageContext.request.userPrincipal.name == null}">
+        <li class="nav-item">
+            <a class="nav-link link-danger" href="<c:url value="/login"/>">Đăng nhập</a>
+        </li>
+    </c:if>
+    <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <li class="nav-item">
+            <a class="nav-link link-danger" href="<c:url value="/"/>">${pageContext.request.userPrincipal.name}</a>
+        </li>
+    </c:if>
 </ul>
 

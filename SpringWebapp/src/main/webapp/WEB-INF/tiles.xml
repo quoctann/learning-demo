@@ -21,4 +21,8 @@
         <put-attribute name="title" value="Quản lý sản phẩm" />
         <put-attribute name="content" value="/WEB-INF/jsp/product.jsp" />
     </definition>
+    <definition name="login" extends="baseLayout">
+        <put-attribute name="title" value="Đăng nhập" />
+        <put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
+    </definition>
 </tiles-definitions>
