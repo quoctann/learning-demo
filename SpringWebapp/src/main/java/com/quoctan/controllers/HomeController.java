@@ -1,12 +1,15 @@
 package com.quoctan.controllers;
 
+import com.quoctan.pojos.Cart;
 import com.quoctan.pojos.UserDemo;
 import com.quoctan.service.CategoryService;
 import com.quoctan.service.ProductService;
+import com.quoctan.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -34,8 +37,9 @@ public class HomeController {
     
     // Cùng với @ControllerAdvice để đính kèm thông tin chung lên tất cả rq 
     @ModelAttribute
-    public void commonAttr(Model model) {
+    public void commonAttr(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getCategories());
+        model.addAttribute("cartCounter", Utils.countCart((Map<Integer, Cart>) session.getAttribute("cart")));
     }
     
     // Xử lý get thông thường kết hợp query params/request params

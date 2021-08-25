@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!--<h1>Demo tạo thử truy vấn xuống csdl thông qua Hibernate</h1>
 <ul>
 <c:forEach var="cat" items="${categories}">
@@ -8,6 +9,11 @@
 </ul>-->
 
 <h1 class="text-success text-center my-3">Danh mục sản phẩm</h1>
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+    <div class="my-3">
+        <a href="<c:url value="/admin/products"/>" class="btn btn-secondary">Quản lý sản phẩm</a>
+    </div>
+</sec:authorize>
 <form class="row" action="">
     <div class="col-9">
         <input class="form-control" type="text" name="kw" placeholder="Nhập từ khóa để tìm" />
@@ -43,8 +49,9 @@
                 <p class="card-text">${p.price}</p>
             </div>
             <div class="card-footer bg-dark">
-                <button class="btn btn-danger">Mua ngay</button>
-                <button class="btn btn-primary">Thêm vào giỏ</button>
+                <!--Chặn sự kiện click mặc định bằng javascript:;-->
+                <a href="javascript:;" class="btn btn-success" onclick="addToCart(${p.id})">Thêm vào giỏ</a>
+                <a class="btn btn-danger">Mua ngay</a>
             </div>
         </div>
     </c:forEach>

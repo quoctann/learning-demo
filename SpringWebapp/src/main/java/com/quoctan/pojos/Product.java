@@ -1,5 +1,7 @@
 package com.quoctan.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name="product")
+@JsonRootName(value = "products")
 public class Product implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +49,8 @@ public class Product implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     @NotNull(message="{product.category.nullErr}")
+    // Không cho truy xuất từ api
+    @JsonIgnore
     private Category category;
     // n-n fetch mặc định lazy
     @ManyToMany
@@ -54,6 +59,7 @@ public class Product implements Serializable{
             joinColumns = { @JoinColumn(name = "product_id") },
             inverseJoinColumns = { @JoinColumn(name = "manufacturer_id") }
     )
+    @JsonIgnore
     private Set<Manufacturer> manufacturers;
     // Multipart liên kết file vào đường dẫn, gắn @transient để chỉ định trường 
     // ko có hiển thị dưới csdl

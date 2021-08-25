@@ -95,11 +95,21 @@ class TestView(View):
 # generics.RetrieveAPIView để lấy thông tin một User ra, để ràng buộc chỉ user
 # đã đăng nhập mới lấy thông tin được ta ghi đè lại get_permission
 class UserViewSet(viewsets.ViewSet,
-                  generics.CreateAPIView,
-                  generics.RetrieveAPIView):
+                  generics.CreateAPIView,):
     queryset = User.objects.filter(is_active=True)
     serializer_class = UserSerializer
     parser_classes = [MultiPartParser, ]
+
+    # Chỉ định quyền của user đã đăng nhập
+    def get_permissions(self):
+        if self.action == 'current-user':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    # Tạp api get dữ liệu user sau khi đã chứng thực (user đã đăng nhập)
+    @action(methods=['get'], detail=False, url_path='current-user')
+    def current_user(self, request):
+        return Response(self.serializer_class(request.user).data)
 
     def get_permissions(self):
         if self.action == 'retrieve':

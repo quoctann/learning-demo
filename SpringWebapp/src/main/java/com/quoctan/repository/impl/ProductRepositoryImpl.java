@@ -64,4 +64,10 @@ public class ProductRepositoryImpl implements ProductRepository{
         Query q = session.createQuery("Select Count(*) From Product");
         return Long.parseLong(q.getSingleResult().toString());
     }
+
+    @Override
+    public Product getProductById(int id) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        return session.get(Product.class, id);
+    }
 }

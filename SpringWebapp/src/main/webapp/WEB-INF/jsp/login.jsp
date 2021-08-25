@@ -1,11 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:url value="/login" var="action" />
+
 <h1 class="text-center text-primary my-3">Đăng nhập</h1>
 
 <c:if test="${param.error != null}">
     <div class="alert alert-warning">
         Đã có lỗi xảy ra, vui lòng thử lại.
+    </div>
+</c:if>
+<c:if test="${param.accessDenied != null}">
+    <div class="alert alert-warning">
+        Bạn không có quyền truy cập!
     </div>
 </c:if>
 

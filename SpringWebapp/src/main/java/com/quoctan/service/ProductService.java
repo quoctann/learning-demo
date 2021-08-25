@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> getProducts(String kw, int page);
+    Product getProductById(int id);
     long countProduct();
     boolean addOrUpdate(Product product);
 }
